@@ -1,8 +1,9 @@
 package com.group31;
 
+import java.io.Serializable;
 import java.lang.reflect.Array;
 
-public class VectorClock {
+public class VectorClock implements Serializable {
     private Integer[] vector;
     private int size;
 
