@@ -7,7 +7,6 @@ import com.group31.VectorClock;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.time.Duration;
-import java.util.Arrays;
 
 public class SenderRunnable implements Runnable {
     private final int SENDER_INIT_BACKOFF_MILLIS = 15000;

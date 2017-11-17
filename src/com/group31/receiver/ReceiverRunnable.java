@@ -34,19 +34,21 @@ public class ReceiverRunnable implements Runnable, ReceiverRemoteInterface {
     @Override
     public void receiveMessage(Message message) throws RemoteException {
         System.out.println("Received: " + message);
-        if (canDeliverMessage(message)) {
-            deliverMessage(message);
+        synchronized (localClock) {
+            if (canDeliverMessage(message)) {
+                deliverMessage(message);
 
-            for (Message bufferedMessage : buffer) {
-                if (canDeliverMessage(bufferedMessage)) {
-                    deliverMessage(bufferedMessage);
-                    localClock.increment(bufferedMessage.getSourcePid());
-                    buffer.remove(bufferedMessage);
+                for (Message bufferedMessage : buffer) {
+                    if (canDeliverMessage(bufferedMessage)) {
+                        deliverMessage(bufferedMessage);
+                        localClock.increment(bufferedMessage.getSourcePid());
+                        buffer.remove(bufferedMessage);
+                    }
                 }
+            } else {
+                System.out.println("Buffering: <" + message + ">");
+                buffer.add(message);
             }
-        } else {
-            System.out.println("Buffering: <" + message + ">");
-            buffer.add(message);
         }
     }
 
