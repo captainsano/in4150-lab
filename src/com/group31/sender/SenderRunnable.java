@@ -7,29 +7,30 @@ import com.group31.VectorClock;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.time.Duration;
+import java.util.Arrays;
 
 public class SenderRunnable implements Runnable {
     private final int SENDER_INIT_BACKOFF_MILLIS = 15000;
 
     private final int PID;
 
-    private int messageCount;
+    private final int MAX_MESSAGE_COUNT;
     private Duration interval;
 
-    private int totalProcessCount;
+    private final int TOTAL_PROCESS_COUNT;
     private VectorClock localClock;
 
     public SenderRunnable(
             int pid,
-            int messageCount,
+            int maxMessageCount,
             Duration interval,
             int totalProcessCount,
             VectorClock localClock
     ) {
         this.PID = pid;
-        this.messageCount = messageCount;
+        this.MAX_MESSAGE_COUNT = maxMessageCount;
         this.interval = interval;
-        this.totalProcessCount = totalProcessCount;
+        this.TOTAL_PROCESS_COUNT = totalProcessCount;
         this.localClock = localClock;
     }
 
@@ -42,17 +43,21 @@ public class SenderRunnable implements Runnable {
             e.printStackTrace();
         }
 
-        for (int i = 0; i < this.messageCount; i++) {
+        for (int i = 0; i < MAX_MESSAGE_COUNT; i++) {
             try {
-                this.localClock.increment(this.PID);
-                System.out.println("Sending message " + i + " at " + this.localClock);
-                Thread.sleep(this.interval.toMillis());
+                localClock.increment(PID);
+                System.out.println("Broadcasting message " + i + " at " + localClock);
 
-                String name = "process-" + this.PID;
-                Registry registry = LocateRegistry.getRegistry("localhost");
-                ReceiverRemoteInterface receiver = (ReceiverRemoteInterface) registry.lookup(name);
+                for (int j = 0; j < TOTAL_PROCESS_COUNT; j++) {
+                    if (j == PID) { // For now, send to itself
+                        String name = "process-" + j;
+                        Registry registry = LocateRegistry.getRegistry("localhost");
+                        ReceiverRemoteInterface receiver = (ReceiverRemoteInterface) registry.lookup(name);
+                        receiver.receiveMessage(new Message(PID, localClock, "<some-content>"));
+                    }
+                }
 
-                receiver.receiveMessage(new Message(this.PID, this.localClock, "<some-content>"));
+                Thread.sleep(interval.toMillis());
             } catch (Exception e) {
                 System.out.println("Exception in sender thread");
                 e.printStackTrace();

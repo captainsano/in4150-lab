@@ -1,13 +1,12 @@
 package com.group31;
 
 import java.io.Serializable;
-import java.util.Vector;
 
 public class VectorClock implements Serializable {
     private Integer[] vector;
     private int size;
 
-    VectorClock(int size) throws IllegalArgumentException {
+    public VectorClock(int size) throws IllegalArgumentException {
         if (size == 0) {
             throw new IllegalArgumentException("Size has to be at least 1");
         }
@@ -18,7 +17,7 @@ public class VectorClock implements Serializable {
         clear();
     }
 
-    VectorClock(VectorClock other) {
+    public VectorClock(VectorClock other) {
         size = other.size;
         vector = new Integer[size];
         for (int i = 0; i < size; i++) {
@@ -46,19 +45,6 @@ public class VectorClock implements Serializable {
         }
 
         this.vector[i] += 1;
-    }
-
-    synchronized public VectorClock max(VectorClock other) throws IllegalArgumentException {
-        if (this.size != other.size) {
-            throw new IllegalArgumentException("Vectors in comparison should be of same size");
-        }
-
-        VectorClock maxVectorClock = new VectorClock(this.size);
-        for (int i = 0; i < this.size; i++) {
-            maxVectorClock.vector[i] = Math.max(this.vector[i], other.vector[i]);
-        }
-
-        return maxVectorClock;
     }
 
     synchronized public boolean isGreaterThanOrEqualTo(VectorClock other) throws IllegalArgumentException {

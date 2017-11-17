@@ -9,7 +9,7 @@ public class Message implements Serializable {
 
     public Message(int sourcePid, VectorClock timestamp, String content) {
         this.sourcePid = sourcePid;
-        this.timestamp = new VectorClock(timestamp); // Make a copy
+        this.timestamp = new VectorClock(timestamp);
         this.content = content;
     }
 
@@ -18,7 +18,7 @@ public class Message implements Serializable {
     }
 
     public VectorClock getTimestamp() {
-        return timestamp;
+        return new VectorClock(timestamp);
     }
 
     public String getContent() {
