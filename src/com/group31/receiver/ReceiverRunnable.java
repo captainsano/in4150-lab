@@ -10,11 +10,11 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 
 public class ReceiverRunnable implements Runnable, ReceiverRemoteInterface {
-    int pid;
-    VectorClock localClock;
-    ArrayList<Message> buffer;
+    private final int pid;
+    private VectorClock localClock;
+    private ArrayList<Message> buffer;
 
-    public ReceiverRunnable(int pid, int totalProcessCount, VectorClock localClock) {
+    public ReceiverRunnable(int pid, VectorClock localClock) {
         this.pid = pid;
         this.localClock = localClock;
         this.buffer = new ArrayList<>();

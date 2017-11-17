@@ -3,34 +3,31 @@ package com.group31;
 import com.group31.receiver.ReceiverRunnable;
 import com.group31.sender.SenderRunnable;
 
-import java.time.Duration;
-
 public class BSSProcess {
 
-    public static void main(String[] args) {
-//        if (args.length < 2) {
-//            system.out.println("arguments must be specified to identify the process");
-//        }
+    private static final int MAX_INTERVAL = 2500;
+    private static final int MAX_MESSAGE_COUNT = 10;
 
-//        int PID = Integer.parseInt(args[0]);
-        final int PID = 1;
-        int TOTAL_PROCESS_COUNT = 3;
+    public static void main(String[] args) {
+        if (args.length < 1) {
+            System.out.println("arguments must be specified to identify the process");
+            System.exit(0);
+        }
+
+        final int PID = Integer.parseInt(args[0]);
+        int TOTAL_PROCESS_COUNT = 3; // TODO: get this from file
 
         VectorClock localVectorClock = new VectorClock(TOTAL_PROCESS_COUNT);
 
         Thread senderThread = new Thread(new SenderRunnable(
                 PID,
-                10,
-                Duration.ofMillis(1000),
+                MAX_MESSAGE_COUNT,
+                MAX_INTERVAL,
                 TOTAL_PROCESS_COUNT,
                 localVectorClock
         ));
 
-        Thread receiverThread = new Thread(new ReceiverRunnable(
-                PID,
-                TOTAL_PROCESS_COUNT,
-                localVectorClock
-        ));
+        Thread receiverThread = new Thread(new ReceiverRunnable(PID, localVectorClock));
 
         try {
             receiverThread.join();

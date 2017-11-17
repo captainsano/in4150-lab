@@ -6,15 +6,14 @@ import com.group31.VectorClock;
 
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
-import java.time.Duration;
 
 public class SenderRunnable implements Runnable {
-    private final int SENDER_INIT_BACKOFF_MILLIS = 15000;
+    private final int SENDER_INIT_BACKOFF_MILLIS = 5000;
 
     private final int PID;
 
     private final int MAX_MESSAGE_COUNT;
-    private Duration interval;
+    private final int MAX_INTERVAL;
 
     private final int TOTAL_PROCESS_COUNT;
     private VectorClock localClock;
@@ -22,20 +21,27 @@ public class SenderRunnable implements Runnable {
     public SenderRunnable(
             int pid,
             int maxMessageCount,
-            Duration interval,
+            int maxInterval,
             int totalProcessCount,
             VectorClock localClock
     ) {
         this.PID = pid;
         this.MAX_MESSAGE_COUNT = maxMessageCount;
-        this.interval = interval;
+        this.MAX_INTERVAL = maxInterval;
         this.TOTAL_PROCESS_COUNT = totalProcessCount;
         this.localClock = localClock;
+    }
+
+    private void makeRandomDelay() throws InterruptedException {
+        long delay = (long)(Math.max(Math.random(), 0.1) * MAX_INTERVAL);
+        System.out.println("Random delay: " + delay + "ms");
+        Thread.sleep(delay);
     }
 
     @Override
     public void run() {
         try {
+            System.out.println("Sender waiting for network setup");
             Thread.sleep(SENDER_INIT_BACKOFF_MILLIS);
         } catch (Exception e) {
             System.out.println("Sender backoff exception");
@@ -56,7 +62,7 @@ public class SenderRunnable implements Runnable {
                     }
                 }
 
-                Thread.sleep(interval.toMillis());
+                makeRandomDelay();
             } catch (Exception e) {
                 System.out.println("Exception in sender thread");
                 e.printStackTrace();
