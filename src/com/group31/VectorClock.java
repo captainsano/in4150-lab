@@ -1,6 +1,7 @@
 package com.group31;
 
 import java.io.Serializable;
+import java.util.Vector;
 
 public class VectorClock implements Serializable {
     private Integer[] vector;
@@ -58,6 +59,20 @@ public class VectorClock implements Serializable {
         }
 
         return maxVectorClock;
+    }
+
+    synchronized public boolean isGreaterThanOrEqualTo(VectorClock other) throws IllegalArgumentException {
+        if (this.size != other.size) {
+            throw new IllegalArgumentException("Vectors in comparison should be of same size");
+        }
+
+        for (int i = 0; i < other.getIndex(i); i++) {
+            if (getIndex(i) < other.getIndex(i)) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     @Override
