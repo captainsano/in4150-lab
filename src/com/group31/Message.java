@@ -30,7 +30,7 @@ public class Message implements Serializable {
         StringBuilder b = new StringBuilder();
         b.append("Message from: ");
         b.append(getSourcePid());
-        b.append(" at ");
+        b.append(" Vm ");
         b.append(getTimestamp().toString());
         b.append(" content ");
         b.append(getContent());

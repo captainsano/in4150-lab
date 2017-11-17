@@ -50,15 +50,20 @@ public class SenderRunnable implements Runnable {
 
         for (int i = 0; i < MAX_MESSAGE_COUNT; i++) {
             try {
-                localClock.increment(PID);
-                System.out.println("Broadcasting message " + i + " at " + localClock);
+                Message m;
+                synchronized (localClock) {
+                    localClock.increment(PID);
+                    System.out.println("Broadcasting message " + i + " at " + localClock);
+                    m = new Message(PID, localClock, "<some-content>");
+                }
 
                 for (int j = 0; j < TOTAL_PROCESS_COUNT; j++) {
-                    if (j == PID) { // For now, send to itself
+                    if (j != PID) { // For now, send to itself
                         String name = "process-" + j;
-                        Registry registry = LocateRegistry.getRegistry("localhost");
+                        Registry registry = LocateRegistry.getRegistry("localhost"); // TODO: Lookup corresponding hostname
                         ReceiverRemoteInterface receiver = (ReceiverRemoteInterface) registry.lookup(name);
-                        receiver.receiveMessage(new Message(PID, localClock, "<some-content>"));
+                        makeRandomDelay();
+                        receiver.receiveMessage(m);
                     }
                 }
 

@@ -5,17 +5,17 @@ import com.group31.sender.SenderRunnable;
 
 public class BSSProcess {
 
-    private static final int MAX_INTERVAL = 2500;
+    private static final int MAX_INTERVAL = 10000;
     private static final int MAX_MESSAGE_COUNT = 10;
 
     public static void main(String[] args) {
-        if (args.length < 1) {
-            System.out.println("arguments must be specified to identify the process");
+        if (args.length < 2) {
+            System.out.println("required args: <pid> <total-process-count>");
             System.exit(0);
         }
 
         final int PID = Integer.parseInt(args[0]);
-        int TOTAL_PROCESS_COUNT = 3; // TODO: get this from file
+        int TOTAL_PROCESS_COUNT = Integer.parseInt(args[1]); // TODO: get this from file
 
         VectorClock localVectorClock = new VectorClock(TOTAL_PROCESS_COUNT);
 

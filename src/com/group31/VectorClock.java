@@ -1,5 +1,7 @@
 package com.group31;
 
+import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
+
 import java.io.Serializable;
 
 public class VectorClock implements Serializable {
@@ -32,7 +34,8 @@ public class VectorClock implements Serializable {
     }
 
     synchronized public Integer getIndex(int i) throws ArrayIndexOutOfBoundsException {
-        if (i < 0 || i > this.size - 1) {
+        if (i < 0 || i >= this.size) {
+            System.out.println("Erroneous index given to vector clock: " + i);
             throw new ArrayIndexOutOfBoundsException();
         }
 
@@ -52,7 +55,7 @@ public class VectorClock implements Serializable {
             throw new IllegalArgumentException("Vectors in comparison should be of same size");
         }
 
-        for (int i = 0; i < other.getIndex(i); i++) {
+        for (int i = 0; i < vector.length; i++) {
             if (getIndex(i) < other.getIndex(i)) {
                 return false;
             }

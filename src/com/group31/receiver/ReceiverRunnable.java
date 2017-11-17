@@ -8,6 +8,7 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class ReceiverRunnable implements Runnable, ReceiverRemoteInterface {
     private final int pid;
@@ -20,29 +21,37 @@ public class ReceiverRunnable implements Runnable, ReceiverRemoteInterface {
         this.buffer = new ArrayList<>();
     }
 
-    private boolean canDeliverMessage(Message message) {
+    synchronized private boolean canDeliverMessage(Message message) {
         VectorClock expectedClock = new VectorClock(localClock);
         expectedClock.increment(message.getSourcePid());
 
-        return expectedClock.isGreaterThanOrEqualTo(message.getTimestamp());
+        boolean ret = expectedClock.isGreaterThanOrEqualTo(message.getTimestamp());
+
+        System.out.println("Expected: " + expectedClock + " GE? Message: " + message.getTimestamp() + " " + ret);
+
+        return ret;
     }
 
-    private void deliverMessage(Message message) {
-        System.out.println("Delivered: " + message + " [AT LOCAL CLOCK]: " + localClock);
+    synchronized private void deliverMessage(Message message) {
+        System.out.println("Delivered: " + message);
     }
 
     @Override
-    public void receiveMessage(Message message) throws RemoteException {
+    synchronized public void receiveMessage(Message message) throws RemoteException {
         System.out.println("Received: " + message);
         synchronized (localClock) {
             if (canDeliverMessage(message)) {
                 deliverMessage(message);
+                localClock.increment(message.getSourcePid());
 
-                for (Message bufferedMessage : buffer) {
+                Iterator<Message> iter = buffer.iterator();
+                while (iter.hasNext()) {
+                    Message bufferedMessage = iter.next();
+
                     if (canDeliverMessage(bufferedMessage)) {
                         deliverMessage(bufferedMessage);
                         localClock.increment(bufferedMessage.getSourcePid());
-                        buffer.remove(bufferedMessage);
+                        iter.remove();
                     }
                 }
             } else {
