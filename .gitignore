@@ -154,3 +154,11 @@ $RECYCLE.BIN/
 *.lnk
 
 # End of https://www.gitignore.io/api/java,macos,linux,windows,intellij
+/src/com/group31/BSSProcess.class
+.idea/description.html
+.idea/inspectionProfiles/
+.idea/misc.xml
+.idea/modules.xml
+.idea/project-template.xml
+.idea/vcs.xml
+in4150-lab.iml

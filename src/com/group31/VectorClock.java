@@ -1,7 +1,6 @@
 package com.group31;
 
 import java.io.Serializable;
-import java.lang.reflect.Array;
 
 public class VectorClock implements Serializable {
     private Integer[] vector;
@@ -15,12 +14,24 @@ public class VectorClock implements Serializable {
         this.size = size;
 
         vector = new Integer[size];
+        clear();
+    }
+
+    VectorClock(VectorClock other) {
+        size = other.size;
+        vector = new Integer[size];
         for (int i = 0; i < size; i++) {
-            vector[i] = 0;
+            vector[i] = other.vector[i];
         }
     }
 
-    public Integer getIndex(int i) throws ArrayIndexOutOfBoundsException {
+    synchronized public void clear() {
+        for (int i = 0; i < this.size; i++) {
+            this.vector[i] = 0;
+        }
+    }
+
+    synchronized public Integer getIndex(int i) throws ArrayIndexOutOfBoundsException {
         if (i < 0 || i > this.size - 1) {
             throw new ArrayIndexOutOfBoundsException();
         }
@@ -28,8 +39,7 @@ public class VectorClock implements Serializable {
         return this.vector[i];
     }
 
-    // TODO: Syncrhonized
-    public void increment(int i) throws ArrayIndexOutOfBoundsException {
+    synchronized public void increment(int i) throws ArrayIndexOutOfBoundsException {
         if (i < 0 || i > this.size - 1) {
             throw new ArrayIndexOutOfBoundsException();
         }
@@ -37,7 +47,7 @@ public class VectorClock implements Serializable {
         this.vector[i] += 1;
     }
 
-    public VectorClock max(VectorClock other) throws IllegalArgumentException {
+    synchronized public VectorClock max(VectorClock other) throws IllegalArgumentException {
         if (this.size != other.size) {
             throw new IllegalArgumentException("Vectors in comparison should be of same size");
         }
@@ -50,23 +60,8 @@ public class VectorClock implements Serializable {
         return maxVectorClock;
     }
 
-    public boolean isOnlyOneComponentLessByOne(VectorClock other) throws IllegalArgumentException {
-        if (this.size != other.size) {
-            throw new IllegalArgumentException("Vectors in comparison should be of same size");
-        }
-
-        int diffs = 0;
-        for (int i = 0; i < this.size; i++) {
-            if (this.vector[i] < other.vector[i] && other.vector[i] - this.vector[i] == 1) {
-                diffs += 1;
-                if (diffs > 1) { return false; }
-            }
-        }
-        return diffs == 1;
-    }
-
     @Override
-    public String toString() {
+    synchronized public String toString() {
         StringBuilder vcString = new StringBuilder();
         vcString.append("[ ");
 

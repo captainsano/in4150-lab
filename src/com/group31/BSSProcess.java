@@ -1,36 +1,36 @@
 package com.group31;
 
-import java.rmi.registry.LocateRegistry;
-import java.rmi.registry.Registry;
-import java.rmi.server.UnicastRemoteObject;
+import com.group31.receiver.ReceiverRunnable;
+import com.group31.sender.SenderRunnable;
+
 import java.time.Duration;
 
 public class BSSProcess {
 
     public static void main(String[] args) {
-        int PID = 1;
-        int totalProcessCount = 3;
+//        if (args.length < 2) {
+//            system.out.println("arguments must be specified to identify the process");
+//        }
 
-        VectorClock vc = new VectorClock(totalProcessCount);
+//        int PID = Integer.parseInt(args[0]);
+        final int PID = 1;
+        int TOTAL_PROCESS_COUNT = 3;
 
-        Sender sender = new Sender(
+        VectorClock localVectorClock = new VectorClock(TOTAL_PROCESS_COUNT);
+
+        Thread senderThread = new Thread(new SenderRunnable(
                 PID,
                 10,
                 Duration.ofMillis(1000),
-                totalProcessCount,
-                vc
-        );
+                TOTAL_PROCESS_COUNT,
+                localVectorClock
+        ));
 
-        Thread senderThread = new Thread(sender);
-
-        String name = "Process-" + PID;
-        Receiver receiver = new Receiver(
+        Thread receiverThread = new Thread(new ReceiverRunnable(
                 PID,
-                totalProcessCount,
-                vc
-        );
-
-        Thread receiverThread = new Thread(receiver);
+                TOTAL_PROCESS_COUNT,
+                localVectorClock
+        ));
 
         try {
             receiverThread.join();
