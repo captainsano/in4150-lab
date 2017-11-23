@@ -22,6 +22,11 @@ class ProcessState {
     }
 
     private int receiveNntid(int nntid) {
+        if (relaying) {
+            tid = nntid;
+            return tid;
+        }
+
         if (ntid >= tid && ntid >= nntid) {
             tid = ntid;
         } else {
