@@ -8,7 +8,7 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 
 public class SenderRunnable implements Runnable {
-    private final int SENDER_INIT_BACKOFF_MILLIS = 5000;
+    private final int SENDER_INIT_BACKOFF_MILLIS = 15000;
 
     private final int PID;
 
