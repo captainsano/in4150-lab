@@ -9,12 +9,13 @@ import java.rmi.registry.Registry;
 import java.util.ArrayList;
 
 public class SenderRunnable implements Runnable {
-    private final int SENDER_INIT_BACKOFF_MILLIS = 15000;
+    private final int SENDER_INIT_BACKOFF_MILLIS = 5000;
 
     private final int PID;
 
     private final int MAX_MESSAGE_COUNT;
     private final int MAX_INTERVAL;
+    private final int START_DELAY;
 
     private final int TOTAL_PROCESS_COUNT;
     private VectorClock localClock;
@@ -27,7 +28,8 @@ public class SenderRunnable implements Runnable {
             int maxMessageCount,
             int maxInterval,
             int totalProcessCount,
-            VectorClock localClock
+            VectorClock localClock,
+            int startDelay
     ) {
         this.hosts = hosts;
         this.PID = pid;
@@ -35,6 +37,7 @@ public class SenderRunnable implements Runnable {
         this.MAX_INTERVAL = maxInterval;
         this.TOTAL_PROCESS_COUNT = totalProcessCount;
         this.localClock = localClock;
+        this.START_DELAY = startDelay;
     }
 
     private void makeRandomDelay() throws InterruptedException {
@@ -48,6 +51,7 @@ public class SenderRunnable implements Runnable {
         try {
             System.out.println("Sender waiting for network setup");
             Thread.sleep(SENDER_INIT_BACKOFF_MILLIS);
+            Thread.sleep(START_DELAY);
         } catch (Exception e) {
             System.out.println("Sender backoff exception");
             e.printStackTrace();

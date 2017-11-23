@@ -50,8 +50,8 @@ public class BSSProcess {
      *             3 - max messages to send
      */
     public static void main(String[] args) {
-        if (args.length < 4) {
-            System.out.println("required args: <network-file> <this-pid> <max-random-delay-ms> <max-messages>");
+        if (args.length < 5) {
+            System.out.println("required args: <network-file> <this-pid> <max-random-delay-ms> <max-messages> <start-delay>");
             System.exit(0);
         }
 
@@ -60,6 +60,7 @@ public class BSSProcess {
         final int MAX_INTERVAL = Integer.parseInt(args[2]);
         final int MAX_MESSAGE_COUNT = Integer.parseInt(args[3]);
         final int TOTAL_PROCESS_COUNT = HOSTS.size(); // TODO: infer this from network file
+        final int START_DELAY = Integer.parseInt(args[4]);
 
         VectorClock localVectorClock = new VectorClock(TOTAL_PROCESS_COUNT);
 
@@ -69,7 +70,8 @@ public class BSSProcess {
                 MAX_MESSAGE_COUNT,
                 MAX_INTERVAL,
                 TOTAL_PROCESS_COUNT,
-                localVectorClock
+                localVectorClock,
+                START_DELAY
         ));
 
         Thread receiverThread = new Thread(new ReceiverRunnable(PID, localVectorClock));
