@@ -58,7 +58,7 @@ public class SenderRunnable implements Runnable {
                 }
 
                 for (int j = 0; j < TOTAL_PROCESS_COUNT; j++) {
-                    if (j != PID) { // For now, send to itself
+                    if (j != PID) {
                         String name = "process-" + j;
                         Registry registry = LocateRegistry.getRegistry("localhost"); // TODO: Lookup corresponding hostname
                         ReceiverRemoteInterface receiver = (ReceiverRemoteInterface) registry.lookup(name);
