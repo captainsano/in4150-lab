@@ -1,7 +1,5 @@
 package com.group31.receiver;
 
-import com.group31.Message;
-
 import java.io.*;
 
 public class Logger<T> {
