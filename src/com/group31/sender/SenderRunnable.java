@@ -6,6 +6,7 @@ import com.group31.VectorClock;
 
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.util.ArrayList;
 
 public class SenderRunnable implements Runnable {
     private final int SENDER_INIT_BACKOFF_MILLIS = 15000;
@@ -18,13 +19,17 @@ public class SenderRunnable implements Runnable {
     private final int TOTAL_PROCESS_COUNT;
     private VectorClock localClock;
 
+    private final ArrayList<String> hosts;
+
     public SenderRunnable(
+            ArrayList<String> hosts,
             int pid,
             int maxMessageCount,
             int maxInterval,
             int totalProcessCount,
             VectorClock localClock
     ) {
+        this.hosts = hosts;
         this.PID = pid;
         this.MAX_MESSAGE_COUNT = maxMessageCount;
         this.MAX_INTERVAL = maxInterval;
@@ -60,7 +65,7 @@ public class SenderRunnable implements Runnable {
                 for (int j = 0; j < TOTAL_PROCESS_COUNT; j++) {
                     if (j != PID) {
                         String name = "process-" + j;
-                        Registry registry = LocateRegistry.getRegistry("localhost"); // TODO: Lookup corresponding hostname
+                        Registry registry = LocateRegistry.getRegistry(hosts.get(j));
                         ReceiverRemoteInterface receiver = (ReceiverRemoteInterface) registry.lookup(name);
                         makeRandomDelay();
                         receiver.receiveMessage(m);

@@ -14,11 +14,13 @@ public class ReceiverRunnable implements Runnable, ReceiverRemoteInterface {
     private final int pid;
     private VectorClock localClock;
     private ArrayList<Message> buffer;
+    private Logger deliveryLogger;
 
     public ReceiverRunnable(int pid, VectorClock localClock) {
         this.pid = pid;
         this.localClock = localClock;
         this.buffer = new ArrayList<>();
+        deliveryLogger = new Logger<Message>("Delivered", pid);
     }
 
     synchronized private boolean canDeliverMessage(Message message) {
@@ -34,6 +36,7 @@ public class ReceiverRunnable implements Runnable, ReceiverRemoteInterface {
 
     synchronized private void deliverMessage(Message message) {
         System.out.println("Delivered: " + message);
+        deliveryLogger.log(message);
     }
 
     @Override
