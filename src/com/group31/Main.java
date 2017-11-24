@@ -6,15 +6,12 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class Main {
 
-    private static ArrayList<String> getHosts(String filePath) {
-        ArrayList<String> hosts = new ArrayList<>();
+    private static ArrayList<ProcessDescription> getProcesses(String filePath) {
+        ArrayList<ProcessDescription> processes = new ArrayList<>();
 
         try {
             final String encoding = "UTF-8";
@@ -28,7 +25,7 @@ public class Main {
                 String lineTxt;
                 while ((lineTxt = bf.readLine()) != null) {
                     if (lineTxt.trim().length() > 0) {
-                        hosts.add(lineTxt);
+                        processes.add(ProcessDescription.fromNetworkFileLine(lineTxt));
                     }
                 }
                 reader.close();
@@ -40,63 +37,61 @@ public class Main {
             e.printStackTrace();
         }
 
-        return hosts;
+        return processes;
     }
 
-    private static String getNextHostAddress(String filePath, Integer pid) throws IllegalArgumentException {
-        ArrayList<String> hosts = getHosts(filePath);
+    private static ProcessDescription getNextProcess(String filePath, String name) throws IllegalArgumentException {
+        ArrayList<ProcessDescription> processes = getProcesses(filePath);
 
         // Find self pid in the network
-        for (int i = 0; i < hosts.size(); i++) {
-            String hostDescr = hosts.get(i);
-
-            if (Integer.parseInt(hostDescr.split(" ")[0]) == pid) {
-                return hosts.get((i + 1) % hosts.size()).split(" ")[1];
+        for (int i = 0; i < processes.size(); i++) {
+            if (processes.get(i).getName().equals(name)) {
+                return processes.get((i + 1) % processes.size());
             }
         }
 
-        throw new IllegalArgumentException("Process Id " + pid + " was not found");
+        throw new IllegalArgumentException("Process name " + name + " was not found");
     }
 
-    private static String getThisHostAddress(String filePath, Integer pid) throws IllegalArgumentException {
-        ArrayList<String> hosts = getHosts(filePath);
+    private static ProcessDescription getCurrentProcess(String filePath, String name) throws IllegalArgumentException {
+        ArrayList<ProcessDescription> processes = getProcesses(filePath);
 
         // Find self pid in the network
-        for (int i = 0; i < hosts.size(); i++) {
-            String hostDescr = hosts.get(i);
-
-            if (Integer.parseInt(hostDescr.split(" ")[0]) == pid) {
-                return hostDescr.split(" ")[1];
+        for (int i = 0; i < processes.size(); i++) {
+            if (processes.get(i).getName().equals(name)) {
+                return processes.get(i);
             }
         }
 
-        throw new IllegalArgumentException("Process Id " + pid + " was not found");
+        throw new IllegalArgumentException("Process name " + name + " was not found");
     }
 
     public static void main(String[] args) {
         if (args.length < 2) {
-            System.out.println("required args: <network-file> <this-pid>");
+            System.out.println("required args: <network-file> <this-process-name>");
             System.exit(0);
         }
 
-        final int PID = Integer.parseInt(args[1]);
+        ProcessDescription thisProcess = getCurrentProcess(args[0], args[1]);
+        ProcessDescription nextProcess = getNextProcess(args[0], args[1]);
+        System.out.println("This process: " + thisProcess);
+        System.out.println("Next process: " + nextProcess);
 
-        String nextHost = getNextHostAddress(args[0], PID);
-        String thisHost = getThisHostAddress(args[0], PID);
-        System.out.println("Next host: " + nextHost);
-
-        PetersonRunnable petersonRunnable = new PetersonRunnable(PID, thisHost, nextHost);
+        PetersonRunnable petersonRunnable = new PetersonRunnable(thisProcess, nextProcess);
         Thread petersonThread = new Thread(petersonRunnable);
 
         try {
             petersonThread.join();
             petersonThread.start();
 
-            long delay = (long)(Math.max(Math.random(), 0.1) * 5000);
+            Thread.sleep(15000);
+            long delay = (long) (Math.max(Math.random(), 0.1) * 5000);
             System.out.println("First send delay: " + delay + " ms");
             Thread.sleep(delay);
 
-            petersonRunnable.sendToNextHost(PID);
+            if (!petersonRunnable.hasStartedReceiving()) {
+                petersonRunnable.sendToNextHost(thisProcess.getPid());
+            }
         } catch (Exception e) {
             System.out.println("Exception in Main");
             e.printStackTrace();

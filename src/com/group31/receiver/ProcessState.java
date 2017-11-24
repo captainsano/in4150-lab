@@ -8,7 +8,7 @@ class ProcessState {
     private Integer ntid;
     private boolean elected = false;
     private boolean relaying = false;
-    private boolean roundComplete = true;
+    private boolean receivedNtid = false;
 
     ProcessState(int PID) {
         this.PID = PID;
@@ -16,39 +16,36 @@ class ProcessState {
     }
 
     private int receiveNtid(int ntid) {
-        this.roundComplete = false;
+        this.receivedNtid = true;
         this.ntid = ntid;
         return Math.max(tid, ntid);
     }
 
     private int receiveNntid(int nntid) {
-        if (relaying) {
-            tid = nntid;
-            return tid;
-        }
-
+        receivedNtid = true;
+        // Check if simulated middle guy is greater than left and right
         if (ntid >= tid && ntid >= nntid) {
             tid = ntid;
         } else {
             relaying = true;
-            return DONT_SEND;
+            return tid;
         }
 
-        roundComplete = true;
         return tid;
     }
 
-    public int receive(int nid) {
-        if (elected || (nid == PID)) {
+    synchronized public int receive(int pidFromUpstream) {
+        if (elected || (pidFromUpstream == PID)) {
             elected = true;
-            return PID;
+            return DONT_SEND;
         }
 
         if (relaying) {
-            return nid;
+            System.out.println("relaying");
+            return pidFromUpstream;
         }
 
-        return roundComplete ? receiveNtid(nid) : receiveNntid(nid);
+        return receivedNtid ? receiveNntid(pidFromUpstream) : receiveNtid(pidFromUpstream);
     }
 
     public boolean isElected() {
