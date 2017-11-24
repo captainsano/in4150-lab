@@ -51,6 +51,11 @@ public class PetersonRunnable implements Runnable, ReceiverRemoteInterface {
             receivedFirstEvent = true;
         }
 
+        if (processState.isElected()) {
+            System.out.println("Got elected already, discarding");
+            return;
+        }
+
         System.out.println("This process " + thisProcess.getName() + " received " + id);
 
         int tid = processState.receive(id);
