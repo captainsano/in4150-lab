@@ -22,15 +22,14 @@ class ProcessState {
     }
 
     private int receiveNntid(int nntid) {
-        receivedNtid = true;
         // Check if simulated middle guy is greater than left and right
         if (ntid >= tid && ntid >= nntid) {
             tid = ntid;
         } else {
             relaying = true;
-            return tid;
         }
 
+        receivedNtid = false; // Sets up the next round
         return tid;
     }
 

@@ -84,7 +84,7 @@ public class Main {
             petersonThread.join();
             petersonThread.start();
 
-            Thread.sleep(15000);
+            Thread.sleep(5000); // Wait for processes to bind
             long delay = (long) (Math.max(Math.random(), 0.1) * 5000);
             System.out.println("First send delay: " + delay + " ms");
             Thread.sleep(delay);
