@@ -1,17 +1,17 @@
 package com.group31;
 
-import com.group31.receiver.PetersonRunnable;
+import com.group31.receiver.ByzantineRunnable;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 public class Main {
-
-    private static ArrayList<ProcessDescription> getProcesses(String filePath) {
-        ArrayList<ProcessDescription> processes = new ArrayList<>();
+    private static ArrayList<ByzantineProcessDescription> getProcessesWithByzantineInfo(String filePath) {
+        ArrayList<ByzantineProcessDescription> processes = new ArrayList<>();
 
         try {
             final String encoding = "UTF-8";
@@ -25,7 +25,7 @@ public class Main {
                 String lineTxt;
                 while ((lineTxt = bf.readLine()) != null) {
                     if (lineTxt.trim().length() > 0) {
-                        processes.add(ProcessDescription.fromNetworkFileLine(lineTxt));
+                        processes.add(ByzantineProcessDescription.fromNetworkFileLine(lineTxt));
                     }
                 }
                 reader.close();
@@ -40,21 +40,17 @@ public class Main {
         return processes;
     }
 
-    private static ProcessDescription getNextProcess(String filePath, String name) throws IllegalArgumentException {
-        ArrayList<ProcessDescription> processes = getProcesses(filePath);
-
-        // Find self pid in the network
-        for (int i = 0; i < processes.size(); i++) {
-            if (processes.get(i).getName().equals(name)) {
-                return processes.get((i + 1) % processes.size());
-            }
-        }
-
-        throw new IllegalArgumentException("Process name " + name + " was not found");
+    private static ArrayList<ProcessDescription> getAllProcesses(String filePath) {
+        return new ArrayList<>(
+                getProcessesWithByzantineInfo(filePath)
+                        .stream()
+                        .map((bpd) -> new ProcessDescription(bpd.name, bpd.hostname, bpd.pid))
+                        .collect(Collectors.toList())
+        );
     }
 
-    private static ProcessDescription getCurrentProcess(String filePath, String name) throws IllegalArgumentException {
-        ArrayList<ProcessDescription> processes = getProcesses(filePath);
+    private static ByzantineProcessDescription getCurrentProcess(String filePath, String name) throws IllegalArgumentException {
+        ArrayList<ByzantineProcessDescription> processes = getProcessesWithByzantineInfo(filePath);
 
         // Find self pid in the network
         for (int i = 0; i < processes.size(); i++) {
@@ -72,26 +68,15 @@ public class Main {
             System.exit(0);
         }
 
-        ProcessDescription thisProcess = getCurrentProcess(args[0], args[1]);
-        ProcessDescription nextProcess = getNextProcess(args[0], args[1]);
+        ArrayList<ProcessDescription> allProcesses = getAllProcesses(args[0]);
+        ByzantineProcessDescription thisProcess = getCurrentProcess(args[0], args[1]);
         System.out.println("This process: " + thisProcess);
-        System.out.println("Next process: " + nextProcess);
 
-        PetersonRunnable petersonRunnable = new PetersonRunnable(thisProcess, nextProcess);
-        Thread petersonThread = new Thread(petersonRunnable);
+        Thread byzantineThread = new Thread(new ByzantineRunnable(allProcesses, thisProcess));
 
         try {
-            petersonThread.join();
-            petersonThread.start();
-
-            Thread.sleep(5000); // Wait for processes to bind
-            long delay = (long) (Math.max(Math.random(), 0.1) * 5000);
-            System.out.println("First send delay: " + delay + " ms");
-            Thread.sleep(delay);
-
-            if (!petersonRunnable.hasStartedReceiving()) {
-                petersonRunnable.sendToNextHost(thisProcess.getPid());
-            }
+            byzantineThread.join();
+            byzantineThread.start();
         } catch (Exception e) {
             System.out.println("Exception in Main");
             e.printStackTrace();

@@ -1,19 +1,9 @@
 package com.group31;
 
 public class ProcessDescription {
-    private String name;
-    private String hostname;
-    private int pid;
-
-    public static ProcessDescription fromNetworkFileLine(String line) {
-        String[] components = line.split(" ");
-
-        if (components.length < 3) {
-            throw new IllegalArgumentException("Expected 3 components: <name> <hostname> <pid>");
-        }
-
-        return new ProcessDescription(components[0], components[1], Integer.parseInt(components[2]));
-    }
+    protected String name;
+    protected String hostname;
+    protected int pid;
 
     public ProcessDescription(String name, String hostname, int pid) {
         this.name = name;
@@ -40,5 +30,10 @@ public class ProcessDescription {
                 ", hostname='" + hostname + '\'' +
                 ", pid=" + pid +
                 '}';
+    }
+
+    @Override
+    public int hashCode() {
+        return this.pid;
     }
 }
