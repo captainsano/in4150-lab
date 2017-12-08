@@ -1,9 +1,5 @@
 package com.group31;
 
-import com.group31.BroadcastRunnable;
-import com.group31.ByzantineMessage;
-import com.group31.ByzantineProcessDescription;
-import com.group31.ProcessDescription;
 import com.group31.receiver.ReceiverRemoteInterface;
 
 import java.rmi.RemoteException;
@@ -11,7 +7,6 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class MaliciousByzantineRunnable implements Runnable, ReceiverRemoteInterface {
     private ProcessDescription thisProcess;
@@ -28,11 +23,19 @@ public class MaliciousByzantineRunnable implements Runnable, ReceiverRemoteInter
         new Thread(new BroadcastRunnable(message, allProcesses)).start();
     }
 
+    private int generateRandomBinary() {
+        return ((int) (Math.random() * 10) % 2);
+    }
+
     @Override
     public void receive(ByzantineMessage message) throws RemoteException {
         // Discard messages from self and broadcast opposite value from others
         if (message.getSender().getPid() != thisProcess.getPid()) {
-            broadcast(message.getPhase(), message.getRound(), 1 - message.getW());
+            if (message.getW() == 0 || message.getW() == 1) {
+                broadcast(message.getPhase(), message.getRound(), 1 - message.getW());
+            } else {
+                broadcast(message.getPhase(), message.getRound(), generateRandomBinary());
+            }
         }
     }
 
