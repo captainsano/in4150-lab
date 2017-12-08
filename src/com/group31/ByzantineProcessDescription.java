@@ -7,14 +7,14 @@ public class ByzantineProcessDescription extends ProcessDescription {
         String[] components = line.split(" ");
 
         if (components.length < 3) {
-            throw new IllegalArgumentException("Expected 4 components: <name> <hostname> <pid> <malicious>");
+            throw new IllegalArgumentException("Expected 3 components: <pid> <hostname> <malicious>");
         }
 
-        return new ByzantineProcessDescription(components[0], components[1], Integer.parseInt(components[2]), Integer.parseInt(components[3]) == 1);
+        return new ByzantineProcessDescription(Integer.parseInt(components[0]), components[1], Integer.parseInt(components[2]) == 1);
     }
 
-    public ByzantineProcessDescription(String name, String hostname, int pid, boolean isMaliciousNode) {
-        super(name, hostname, pid);
+    public ByzantineProcessDescription(int pid, String hostname, boolean isMaliciousNode) {
+        super(pid, hostname);
         this.isMaliciousNode = isMaliciousNode;
     }
 
@@ -26,9 +26,8 @@ public class ByzantineProcessDescription extends ProcessDescription {
     @Override
     public String toString() {
         return "ByzantineProcessDescription{" +
-                "  name='" + name + '\'' +
+                "  pid='" + pid + '\'' +
                 ", hostname='" + hostname + '\'' +
-                ", pid=" + pid +
                 ", isMaliciousNode=" + isMaliciousNode +
                 '}';
     }

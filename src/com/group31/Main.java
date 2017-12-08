@@ -44,32 +44,32 @@ public class Main {
         return new ArrayList<>(
                 getProcessesWithByzantineInfo(filePath)
                         .stream()
-                        .map((bpd) -> new ProcessDescription(bpd.name, bpd.hostname, bpd.pid))
+                        .map((bpd) -> new ProcessDescription(bpd.pid, bpd.hostname))
                         .collect(Collectors.toList())
         );
     }
 
-    private static ByzantineProcessDescription getCurrentProcess(String filePath, String name) throws IllegalArgumentException {
+    private static ByzantineProcessDescription getCurrentProcess(String filePath, int pid) throws IllegalArgumentException {
         ArrayList<ByzantineProcessDescription> processes = getProcessesWithByzantineInfo(filePath);
 
         // Find self pid in the network
         for (int i = 0; i < processes.size(); i++) {
-            if (processes.get(i).getName().equals(name)) {
+            if (processes.get(i).getPid() == pid) {
                 return processes.get(i);
             }
         }
 
-        throw new IllegalArgumentException("Process name " + name + " was not found");
+        throw new IllegalArgumentException("Process pid " + pid + " was not found");
     }
 
     public static void main(String[] args) {
         if (args.length < 2) {
-            System.out.println("required args: <network-file> <this-process-name>");
+            System.out.println("required args: <network-file> <this-process-pid>");
             System.exit(0);
         }
 
         ArrayList<ProcessDescription> allProcesses = getAllProcesses(args[0]);
-        ByzantineProcessDescription thisProcess = getCurrentProcess(args[0], args[1]);
+        ByzantineProcessDescription thisProcess = getCurrentProcess(args[0], Integer.parseInt(args[1]));
         System.out.println("This process: " + thisProcess);
 
         Thread byzantineThread = new Thread(

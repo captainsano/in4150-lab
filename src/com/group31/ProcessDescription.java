@@ -3,18 +3,12 @@ package com.group31;
 import java.io.Serializable;
 
 public class ProcessDescription implements Serializable {
-    protected String name;
     protected String hostname;
     protected int pid;
 
-    public ProcessDescription(String name, String hostname, int pid) {
-        this.name = name;
+    public ProcessDescription(int pid, String hostname) {
         this.hostname = hostname;
         this.pid = pid;
-    }
-
-    public String getName() {
-        return name;
     }
 
     public String getHostname() {
@@ -28,9 +22,8 @@ public class ProcessDescription implements Serializable {
     @Override
     public String toString() {
         return "ProcessDescription{" +
-                "name='" + name + '\'' +
+                "pid='" + pid + '\'' +
                 ", hostname='" + hostname + '\'' +
-                ", pid=" + pid +
                 '}';
     }
 

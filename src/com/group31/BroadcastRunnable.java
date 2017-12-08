@@ -30,7 +30,7 @@ public class BroadcastRunnable implements Runnable {
             try {
                 makeRandomDelay();
                 Registry r = LocateRegistry.getRegistry(processDescription.getHostname());
-                ReceiverRemoteInterface receiver = (ReceiverRemoteInterface)r.lookup("process-" + processDescription.getName());
+                ReceiverRemoteInterface receiver = (ReceiverRemoteInterface)r.lookup("process-" + processDescription.getPid());
                 receiver.receive(message);
                 makeRandomDelay();
             } catch (Exception e) {

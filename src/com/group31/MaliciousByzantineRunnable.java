@@ -42,7 +42,7 @@ public class MaliciousByzantineRunnable implements Runnable, ReceiverRemoteInter
             // Bind receiver to registry
             ReceiverRemoteInterface stub = (ReceiverRemoteInterface) UnicastRemoteObject.exportObject(this, 0);
             Registry registry = LocateRegistry.getRegistry(thisProcess.getHostname());
-            registry.rebind("process-" + thisProcess.getName(), stub);
+            registry.rebind("process-" + thisProcess.getPid(), stub);
             System.out.println("Receiver bound");
 
 
