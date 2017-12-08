@@ -1,6 +1,6 @@
 package com.group31;
 
-import com.group31.receiver.ByzantineRunnable;
+import com.group31.receiver.HonestByzantineRunnable;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -72,7 +72,11 @@ public class Main {
         ByzantineProcessDescription thisProcess = getCurrentProcess(args[0], args[1]);
         System.out.println("This process: " + thisProcess);
 
-        Thread byzantineThread = new Thread(new ByzantineRunnable(allProcesses, thisProcess));
+        Thread byzantineThread = new Thread(
+                thisProcess.isMaliciousNode() ?
+                        new MaliciousByzantineRunnable(allProcesses, thisProcess) :
+                        new HonestByzantineRunnable(allProcesses, thisProcess)
+        );
 
         try {
             byzantineThread.join();

@@ -1,6 +1,8 @@
 package com.group31;
 
-public class ProcessDescription {
+import java.io.Serializable;
+
+public class ProcessDescription implements Serializable {
     protected String name;
     protected String hostname;
     protected int pid;

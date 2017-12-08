@@ -12,24 +12,22 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class ByzantineRunnable implements Runnable, ReceiverRemoteInterface {
-    public static String NOTIFICATION_PHASE = "n";
+public class HonestByzantineRunnable implements Runnable, ReceiverRemoteInterface {
+    public static String NOTIFICATION_PHASE = "N";
     public static String PROPOSAL_PHASE = "P";
-
-    private static final Integer MAX_INTERVAL = 2500;
 
     private String phase = NOTIFICATION_PHASE;
     private int round = 1;
     private int v = 0;
     private boolean decided = false;
-    private ByzantineProcessDescription thisProcess;
+    private ProcessDescription thisProcess;
     private ArrayList<ProcessDescription> allProcesses;
     private Integer n;
     private Integer f;
 
     private HashMap<ProcessDescription, Integer> messageBuffer; // Count down from (n - f)
 
-    public ByzantineRunnable(ArrayList<ProcessDescription> allProcesses, ByzantineProcessDescription thisProcess) {
+    public HonestByzantineRunnable(ArrayList<ProcessDescription> allProcesses, ProcessDescription thisProcess) {
         this.thisProcess = thisProcess;
         this.allProcesses = allProcesses;
         n = allProcesses.size();
@@ -51,7 +49,7 @@ public class ByzantineRunnable implements Runnable, ReceiverRemoteInterface {
     public void receive(ByzantineMessage message) throws RemoteException {
         synchronized (this) {
             if (decided) {
-                System.out.println("Decided so STOPPED");
+                return;
             }
 
             // Notification Phase: Await n - f messages of the form (N; r, *)
@@ -137,11 +135,14 @@ public class ByzantineRunnable implements Runnable, ReceiverRemoteInterface {
             Registry registry = LocateRegistry.getRegistry(thisProcess.getHostname());
             registry.rebind("process-" + thisProcess.getName(), stub);
             System.out.println("Receiver bound");
+
+
+            // Initial delay to wait for other processes
+            Thread.sleep(5000);
+            kickstart();
         } catch (Exception e) {
             System.out.println("Exception in receiver binding");
             e.printStackTrace();
         }
-
-        kickstart();
     }
 }

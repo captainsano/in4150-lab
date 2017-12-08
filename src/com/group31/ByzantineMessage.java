@@ -1,6 +1,8 @@
 package com.group31;
 
-public class ByzantineMessage {
+import java.io.Serializable;
+
+public class ByzantineMessage implements Serializable {
     private ProcessDescription sender;
     private String phase;
     private Integer round;

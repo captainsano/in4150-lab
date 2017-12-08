@@ -18,20 +18,17 @@ public class BroadcastRunnable implements Runnable {
         this.destinations = destinations;
     }
 
-    private void makeRandomDelay() {
-        try {
-            Thread.sleep(MAX_INTERVAL);
-        } catch (Exception e) {
-            System.out.println("Exception in broadcast runnable");
-            e.printStackTrace();
-        }
+    private void makeRandomDelay() throws InterruptedException {
+        long delay = (long)(Math.max(Math.random(), 0.1) * MAX_INTERVAL);
+//        System.out.println("Random delay: " + delay + "ms");
+        Thread.sleep(delay);
     }
 
     @Override
     public void run() {
         this.destinations.forEach(processDescription -> {
-            makeRandomDelay();
             try {
+                makeRandomDelay();
                 Registry r = LocateRegistry.getRegistry(processDescription.getHostname());
                 ReceiverRemoteInterface receiver = (ReceiverRemoteInterface)r.lookup("process-" + processDescription.getName());
                 receiver.receive(message);
