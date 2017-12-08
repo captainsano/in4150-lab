@@ -43,6 +43,7 @@ public class ByzantineRunnable implements Runnable, ReceiverRemoteInterface {
 
     private void broadcast(int w) {
         ByzantineMessage message = new ByzantineMessage(thisProcess, phase, round, w);
+        System.out.println("Broadcasting: " + message);
         new Thread(new BroadcastRunnable(message, allProcesses)).start();
     }
 
