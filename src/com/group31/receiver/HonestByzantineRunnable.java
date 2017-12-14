@@ -30,7 +30,6 @@ public class HonestByzantineRunnable implements Runnable, ReceiverRemoteInterfac
         this.allProcesses = allProcesses;
         n = allProcesses.size();
         f = 0.2 * n; // 1/5 of n
-        System.out.println("F: " + f);
     }
 
     // ? - Randomly choose some value, > 1
@@ -59,8 +58,6 @@ public class HonestByzantineRunnable implements Runnable, ReceiverRemoteInterfac
         while (true) {
             synchronized (this) {
                 long count = buffer.stream().filter(m -> m.getPhase().equals(this.phase) && m.getRound() == this.round).count();
-
-//                System.out.println("Awaiting, count: " + count + " phase: " + this.phase + " round: " + this.round);
 
                 if (count >= Math.floor(n - f)) {
                     break;
@@ -132,7 +129,7 @@ public class HonestByzantineRunnable implements Runnable, ReceiverRemoteInterfac
             }
         }
 
-        System.out.println("----- Decided value: " + v);
+        System.out.println("PID " + thisProcess.getPid() + " Decided value: " + v);
     }
 
     @Override
@@ -142,7 +139,7 @@ public class HonestByzantineRunnable implements Runnable, ReceiverRemoteInterfac
             ReceiverRemoteInterface stub = (ReceiverRemoteInterface) UnicastRemoteObject.exportObject(this, 0);
             Registry registry = LocateRegistry.getRegistry(thisProcess.getHostname());
             registry.rebind("process-" + thisProcess.getPid(), stub);
-            System.out.println("Receiver bound");
+            System.out.println("PID " + thisProcess.getPid() + " Receiver bound");
 
             // Initial delay to wait for other processes
             Thread.sleep(10000);

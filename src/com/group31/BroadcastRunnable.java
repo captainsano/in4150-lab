@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class BroadcastRunnable implements Runnable {
-    private static Integer MAX_INTERVAL = 2500;
+    private static Integer MAX_INTERVAL = 100;
 
     private ProcessDescription sender;
     private ArrayList<ProcessDescription> destinations;
@@ -22,7 +22,7 @@ public class BroadcastRunnable implements Runnable {
     }
 
     private void makeRandomDelay() throws InterruptedException {
-        int delay = new Random().nextInt(100);
+        int delay = new Random().nextInt(MAX_INTERVAL);
         Thread.sleep(delay);
     }
 
@@ -37,8 +37,7 @@ public class BroadcastRunnable implements Runnable {
                     receiver.receive(message);
                     makeRandomDelay();
                 } catch (Exception e) {
-                    //                System.out.println("Exception in broadcast runnable");
-                    //                e.printStackTrace();
+                    // noop
                 }
             }
         });

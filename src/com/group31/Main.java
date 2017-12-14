@@ -6,7 +6,9 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 public class Main {
@@ -63,27 +65,46 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        if (args.length < 2) {
-            System.out.println("required args: <network-file> <this-process-pid>");
+        if (args.length < 3) {
+            System.out.println("required args: <hostname> <n> <f>");
             System.exit(0);
         }
 
-        ArrayList<ProcessDescription> allProcesses = getAllProcesses(args[0]);
-        ByzantineProcessDescription thisProcess = getCurrentProcess(args[0], Integer.parseInt(args[1]));
-        System.out.println("This process: " + thisProcess);
+        System.out.println("Args: " + args[0] + " " + args[1] + " " + args[2]);
 
-        Thread byzantineThread = new Thread(
-                thisProcess.isMaliciousNode() ?
-                        new MaliciousByzantineRunnable(allProcesses, thisProcess) :
-                        new HonestByzantineRunnable(allProcesses, thisProcess)
-        );
+        String hostname = args[0];
+        Integer n = Integer.parseInt(args[1]);
+        Integer f = Integer.parseInt(args[2]);
 
-        try {
-            byzantineThread.join();
-            byzantineThread.start();
-        } catch (Exception e) {
-            System.out.println("Exception in Main");
-            e.printStackTrace();
+        ArrayList<ByzantineProcessDescription> allProcesses = new ArrayList<>();
+        ArrayList<ProcessDescription> allProcessWithoutMaliciousInfo = new ArrayList<>();
+
+        for (int i = 0; i < n; i++) {
+            boolean isMalicious = f != 0;
+
+            ByzantineProcessDescription p = new ByzantineProcessDescription(i + 1, hostname, isMalicious);
+            if (isMalicious) {
+                f = f - 1;
+            }
+
+            allProcesses.add(p);
+            allProcessWithoutMaliciousInfo.add(p);
+        }
+
+        for (int i = 0; i < n; i++) {
+            ByzantineProcessDescription p = allProcesses.get(i);
+
+            Thread byzantineThread = new Thread(
+                    p.isMaliciousNode() ? new MaliciousByzantineRunnable(allProcessWithoutMaliciousInfo, p) : new HonestByzantineRunnable(allProcessWithoutMaliciousInfo, p)
+            );
+
+            try {
+                byzantineThread.join();
+                byzantineThread.start();
+            } catch (Exception e) {
+                System.out.println("Exception in Main");
+                e.printStackTrace();
+            }
         }
     }
 }

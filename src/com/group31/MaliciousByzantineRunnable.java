@@ -43,7 +43,7 @@ public class MaliciousByzantineRunnable implements Runnable, ReceiverRemoteInter
             ReceiverRemoteInterface stub = (ReceiverRemoteInterface) UnicastRemoteObject.exportObject(this, 0);
             Registry registry = LocateRegistry.getRegistry(thisProcess.getHostname());
             registry.rebind("process-" + thisProcess.getPid(), stub);
-            System.out.println("Receiver bound");
+            System.out.println("PID " + thisProcess.getPid() + " Receiver bound (I am Malicious hahaha)");
 
             // Initial delay to wait for other processes
             Thread.sleep(5000);
