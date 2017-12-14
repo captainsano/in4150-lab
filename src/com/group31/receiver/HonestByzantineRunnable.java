@@ -4,14 +4,11 @@ import com.group31.BroadcastRunnable;
 import com.group31.ByzantineMessage;
 import com.group31.ProcessDescription;
 
-import java.lang.reflect.Array;
-import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
+import java.util.Random;
 
 public class HonestByzantineRunnable implements Runnable, ReceiverRemoteInterface {
     public static String NOTIFICATION_PHASE = "N";
@@ -24,126 +21,57 @@ public class HonestByzantineRunnable implements Runnable, ReceiverRemoteInterfac
     private ProcessDescription thisProcess;
     private ArrayList<ProcessDescription> allProcesses;
     private Integer n;
-    private Integer f;
+    private Double f;
 
     private ArrayList<ByzantineMessage> buffer = new ArrayList<>();
-    private HashMap<ProcessDescription, Integer> messages;
 
     public HonestByzantineRunnable(ArrayList<ProcessDescription> allProcesses, ProcessDescription thisProcess) {
         this.thisProcess = thisProcess;
         this.allProcesses = allProcesses;
         n = allProcesses.size();
-        f = (int) Math.floor(0.2 * allProcesses.size());
+        f = 0.2 * n; // 1/5 of n
+        System.out.println("F: " + f);
     }
 
-    // ? - Randomly choose 0 or 1
-    private int generateRandomW() {
+    // ? - Randomly choose some value, > 1
+    private int generateRandomProposal() {
+        return new Random().nextInt(100) + 2;
+    }
+
+    private int generateRandomBinary() {
         return ((int) (Math.random() * 10) % 2);
     }
 
     private void broadcast(int w) {
         ByzantineMessage message = new ByzantineMessage(thisProcess, phase, round, w);
         System.out.println("Broadcasting: " + message);
-        new Thread(new BroadcastRunnable(message, allProcesses)).start();
-    }
-
-    synchronized private boolean canDeliverMessage(ByzantineMessage message) {
-        return phase.equals(message.getPhase()) && round == message.getRound();
-    }
-
-    synchronized private void checkBuffer() {
-        Iterator<ByzantineMessage> iter = buffer.iterator();
-        while (iter.hasNext()) {
-            ByzantineMessage message = iter.next();
-            if (canDeliverMessage(message)) {
-                iter.remove();
-                deliver(message);
-            }
-        }
-    }
-
-    synchronized public void deliver(ByzantineMessage message) {
-        if (decided) {
-            return;
-        }
-
-        System.out.println("-----> Delivering ");
-        System.out.println(message);
-        System.out.println("------------------");
-
-        // Notification Phase: Await n - f messages of the form (N; r, *)
-        if (phase.equals(NOTIFICATION_PHASE)) {
-            if (message.getRound() == round && message.getPhase().equals(phase)) {
-                messages.put(message.getSender(), message.getW());
-            }
-
-            if (messages.size() >= (n - f)) {
-                phase = PROPOSAL_PHASE;
-
-                long count0 = messages.values().stream().filter(value -> value == 0).count();
-                long count1 = n - count0;
-
-                if (count0 > ((n + f) / 2)) {
-                    broadcast(0);
-                } else if (count1 > ((n + f) / 2)) {
-                    broadcast(1);
-                } else {
-                    broadcast(generateRandomW());
-                }
-
-                // clear message buffer for next phase
-                messages = new HashMap<>();
-            }
-        }
-
-        // Proposal Phase: Await n - f messages of the form (P; r, *)
-        if (phase.equals(PROPOSAL_PHASE) && !decided) {
-            if (message.getRound() == round && message.getPhase().equals(phase)) {
-                messages.put(message.getSender(), message.getW());
-            }
-
-            if (messages.size() >= (n - f)) {
-                long count0 = messages.values().stream().filter(value -> value == 0).count();
-                long count1 = n - count0;
-
-                if (count0 > f || count1 > f) {
-                    v = count0 > f ? 0 : 1;
-                    if (count0 > 3 * f || count1 > 3 * f) {
-                        decided = true;
-                    }
-                } else {
-                    v = generateRandomW();
-                }
-
-                // Broadcast value for the next round
-                phase = NOTIFICATION_PHASE;
-                round = round + 1;
-                messages = new HashMap<>();
-                broadcast(v);
-
-                if (decided) {
-                    System.out.println("----- Decided value: " + v);
-                }
-            }
-        }
-
-        checkBuffer();
+        new Thread(new BroadcastRunnable(thisProcess, message, allProcesses)).start();
     }
 
     @Override
-    public void receive(ByzantineMessage message) throws RemoteException {
+    public void receive(ByzantineMessage message) {
         synchronized (this) {
-            if (!decided) {
-                if (canDeliverMessage(message)) {
-                    deliver(message);
-                } else {
-                    System.out.println("-----> Buffering ");
-                    System.out.println(message);
-                    System.out.println("-----------------");
-                    buffer.add(message);
-                }
+            buffer.add(message);
+        }
+    }
 
-                checkBuffer();
+    private void await() {
+        while (true) {
+            synchronized (this) {
+                long count = buffer.stream().filter(m -> m.getPhase().equals(this.phase) && m.getRound() == this.round).count();
+
+//                System.out.println("Awaiting, count: " + count + " phase: " + this.phase + " round: " + this.round);
+
+                if (count >= Math.floor(n - f)) {
+                    break;
+                }
+            }
+
+            try {
+                Thread.sleep(100);
+            } catch (Exception e) {
+                System.out.println("Exception in await");
+                e.printStackTrace();
             }
         }
     }
@@ -152,19 +80,59 @@ public class HonestByzantineRunnable implements Runnable, ReceiverRemoteInterfac
         synchronized (this) {
             round = 1;
             decided = false;
-            v = generateRandomW();
+            v = generateRandomBinary();
             phase = NOTIFICATION_PHASE;
+        }
 
-            if (!decided) {
-                // reset message buffer
-                messages = new HashMap<>();
+        while (!decided) {
+            // Broadcast (N; r, v)
+            broadcast(v);
 
-                // Broadcast (N; r, v)
-                broadcast(v);
-            } else {
-                System.out.println("Decided on value " + v);
+            // Notification Phase: Await n - f messages of the form (N; r, *)
+            await();
+            synchronized (this) {
+                if (phase.equals(NOTIFICATION_PHASE)) {
+                    long count0 = buffer.stream().filter(m -> m.getPhase().equals(this.phase) && m.getRound() == this.round).filter(m -> m.getW() == 0).count();
+                    long count1 = buffer.stream().filter(m -> m.getPhase().equals(this.phase) && m.getRound() == this.round).filter(m -> m.getW() == 1).count();
+
+                    System.out.println("Notification: " + " count0: " + count0 + " count1: " + count1);
+
+                    phase = PROPOSAL_PHASE;
+                    if (count0 > Math.floor((n + f) * 0.5)) {
+                        broadcast(0);
+                    } else if (count1 > Math.floor((n + f) * 0.5)) {
+                        broadcast(1);
+                    } else {
+                        broadcast(generateRandomProposal());
+                    }
+                }
+            }
+
+            // Proposal Phase: Await n - f messages of the form (P; r, *)
+            await();
+            synchronized (this) {
+                if (phase.equals(PROPOSAL_PHASE) && !decided) {
+                    long count0 = buffer.stream().filter(m -> m.getPhase().equals(this.phase) && m.getRound() == this.round).filter(m -> m.getW() == 0).count();
+                    long count1 = buffer.stream().filter(m -> m.getPhase().equals(this.phase) && m.getRound() == this.round).filter(m -> m.getW() == 1).count();
+
+                    if (count0 > Math.floor(f) || count1 > Math.floor(f)) {
+                        System.out.println("Proposal: " + " count0: " + count0 + " count1: " + count1);
+                        v = count0 > Math.floor(f) ? 0 : 1;
+                        if (count0 > 3 * Math.floor(f) || count1 > 3 * Math.floor(f)) {
+                            decided = true;
+                        }
+                    } else {
+                        v = generateRandomBinary();
+                    }
+
+                    // Broadcast value for the next round
+                    phase = NOTIFICATION_PHASE;
+                    round = round + 1;
+                }
             }
         }
+
+        System.out.println("----- Decided value: " + v);
     }
 
     @Override
@@ -176,9 +144,8 @@ public class HonestByzantineRunnable implements Runnable, ReceiverRemoteInterfac
             registry.rebind("process-" + thisProcess.getPid(), stub);
             System.out.println("Receiver bound");
 
-
             // Initial delay to wait for other processes
-            Thread.sleep(5000);
+            Thread.sleep(10000);
             kickstart();
         } catch (Exception e) {
             System.out.println("Exception in receiver binding");
