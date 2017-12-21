@@ -1,0 +1,167 @@
+Args: 192.168.3.174 51 19
+PID 3 Receiver bound (I am Malicious hahaha)
+PID 7 Receiver bound (I am Malicious hahaha)
+PID 9 Receiver bound (I am Malicious hahaha)
+PID 10 Receiver bound (I am Malicious hahaha)
+PID 12 Receiver bound (I am Malicious hahaha)
+PID 39 Receiver bound
+PID 8 Receiver bound (I am Malicious hahaha)
+PID 48 Receiver bound
+PID 27 Receiver bound
+PID 22 Receiver bound
+PID 33 Receiver bound
+PID 19 Receiver bound (I am Malicious hahaha)
+PID 40 Receiver bound
+PID 18 Receiver bound (I am Malicious hahaha)
+PID 45 Receiver bound
+PID 4 Receiver bound (I am Malicious hahaha)
+PID 28 Receiver bound
+PID 31 Receiver bound
+PID 50 Receiver bound
+PID 23 Receiver bound
+PID 24 Receiver bound
+PID 49 Receiver bound
+PID 20 Receiver bound
+PID 43 Receiver bound
+PID 21 Receiver bound
+PID 30 Receiver bound
+PID 1 Receiver bound (I am Malicious hahaha)
+PID 29 Receiver bound
+PID 47 Receiver bound
+PID 34 Receiver bound
+PID 35 Receiver bound
+PID 5 Receiver bound (I am Malicious hahaha)
+PID 16 Receiver bound (I am Malicious hahaha)
+PID 13 Receiver bound (I am Malicious hahaha)
+PID 14 Receiver bound (I am Malicious hahaha)
+PID 46 Receiver bound
+PID 25 Receiver bound
+PID 37 Receiver bound
+PID 41 Receiver bound
+PID 44 Receiver bound
+PID 17 Receiver bound (I am Malicious hahaha)
+PID 15 Receiver bound (I am Malicious hahaha)
+PID 32 Receiver bound
+PID 26 Receiver bound
+PID 36 Receiver bound
+PID 51 Receiver bound
+PID 42 Receiver bound
+PID 11 Receiver bound (I am Malicious hahaha)
+PID 2 Receiver bound (I am Malicious hahaha)
+PID 38 Receiver bound
+PID 6 Receiver bound (I am Malicious hahaha)
+Broadcasting: ByzantineMessage{sender=ByzantineProcessDescription{  pid='3', hostname='192.168.3.174', isMaliciousNode=true}, phase='N', round=1, w=1}
+Broadcasting: ByzantineMessage{sender=ByzantineProcessDescription{  pid='7', hostname='192.168.3.174', isMaliciousNode=true}, phase='N', round=1, w=0}
+Broadcasting: ByzantineMessage{sender=ByzantineProcessDescription{  pid='9', hostname='192.168.3.174', isMaliciousNode=true}, phase='N', round=1, w=0}
+Broadcasting: ByzantineMessage{sender=ByzantineProcessDescription{  pid='10', hostname='192.168.3.174', isMaliciousNode=true}, phase='N', round=1, w=1}
+Broadcasting: ByzantineMessage{sender=ByzantineProcessDescription{  pid='12', hostname='192.168.3.174', isMaliciousNode=true}, phase='N', round=1, w=0}
+Broadcasting: ByzantineMessage{sender=ByzantineProcessDescription{  pid='8', hostname='192.168.3.174', isMaliciousNode=true}, phase='N', round=1, w=0}
+Broadcasting: ByzantineMessage{sender=ByzantineProcessDescription{  pid='4', hostname='192.168.3.174', isMaliciousNode=true}, phase='N', round=1, w=0}
+Broadcasting: ByzantineMessage{sender=ByzantineProcessDescription{  pid='18', hostname='192.168.3.174', isMaliciousNode=true}, phase='N', round=1, w=1}
+Broadcasting: ByzantineMessage{sender=ByzantineProcessDescription{  pid='19', hostname='192.168.3.174', isMaliciousNode=true}, phase='N', round=1, w=0}
+Broadcasting: ByzantineMessage{sender=ByzantineProcessDescription{  pid='1', hostname='192.168.3.174', isMaliciousNode=true}, phase='N', round=1, w=0}
+Broadcasting: ByzantineMessage{sender=ByzantineProcessDescription{  pid='17', hostname='192.168.3.174', isMaliciousNode=true}, phase='N', round=1, w=1}
+Broadcasting: ByzantineMessage{sender=ByzantineProcessDescription{  pid='13', hostname='192.168.3.174', isMaliciousNode=true}, phase='N', round=1, w=1}
+Broadcasting: ByzantineMessage{sender=ByzantineProcessDescription{  pid='5', hostname='192.168.3.174', isMaliciousNode=true}, phase='N', round=1, w=1}
+Broadcasting: ByzantineMessage{sender=ByzantineProcessDescription{  pid='16', hostname='192.168.3.174', isMaliciousNode=true}, phase='N', round=1, w=0}
+Broadcasting: ByzantineMessage{sender=ByzantineProcessDescription{  pid='14', hostname='192.168.3.174', isMaliciousNode=true}, phase='N', round=1, w=1}
+Broadcasting: ByzantineMessage{sender=ByzantineProcessDescription{  pid='15', hostname='192.168.3.174', isMaliciousNode=true}, phase='N', round=1, w=1}
+Broadcasting: ByzantineMessage{sender=ByzantineProcessDescription{  pid='11', hostname='192.168.3.174', isMaliciousNode=true}, phase='N', round=1, w=1}
+Broadcasting: ByzantineMessage{sender=ByzantineProcessDescription{  pid='2', hostname='192.168.3.174', isMaliciousNode=true}, phase='N', round=1, w=1}
+Broadcasting: ByzantineMessage{sender=ByzantineProcessDescription{  pid='6', hostname='192.168.3.174', isMaliciousNode=true}, phase='N', round=1, w=0}
+Broadcasting: ByzantineMessage{sender=ByzantineProcessDescription{  pid='39', hostname='192.168.3.174', isMaliciousNode=false}, phase='N', round=1, w=0}
+Broadcasting: ByzantineMessage{sender=ByzantineProcessDescription{  pid='40', hostname='192.168.3.174', isMaliciousNode=false}, phase='N', round=1, w=0}
+Broadcasting: ByzantineMessage{sender=ByzantineProcessDescription{  pid='48', hostname='192.168.3.174', isMaliciousNode=false}, phase='N', round=1, w=1}
+Broadcasting: ByzantineMessage{sender=ByzantineProcessDescription{  pid='45', hostname='192.168.3.174', isMaliciousNode=false}, phase='N', round=1, w=0}
+Broadcasting: ByzantineMessage{sender=ByzantineProcessDescription{  pid='22', hostname='192.168.3.174', isMaliciousNode=false}, phase='N', round=1, w=0}
+Broadcasting: ByzantineMessage{sender=ByzantineProcessDescription{  pid='27', hostname='192.168.3.174', isMaliciousNode=false}, phase='N', round=1, w=1}
+Broadcasting: ByzantineMessage{sender=ByzantineProcessDescription{  pid='28', hostname='192.168.3.174', isMaliciousNode=false}, phase='N', round=1, w=0}
+Broadcasting: ByzantineMessage{sender=ByzantineProcessDescription{  pid='33', hostname='192.168.3.174', isMaliciousNode=false}, phase='N', round=1, w=1}
+Broadcasting: ByzantineMessage{sender=ByzantineProcessDescription{  pid='31', hostname='192.168.3.174', isMaliciousNode=false}, phase='N', round=1, w=0}
+Broadcasting: ByzantineMessage{sender=ByzantineProcessDescription{  pid='50', hostname='192.168.3.174', isMaliciousNode=false}, phase='N', round=1, w=0}
+Broadcasting: ByzantineMessage{sender=ByzantineProcessDescription{  pid='23', hostname='192.168.3.174', isMaliciousNode=false}, phase='N', round=1, w=1}
+Broadcasting: ByzantineMessage{sender=ByzantineProcessDescription{  pid='24', hostname='192.168.3.174', isMaliciousNode=false}, phase='N', round=1, w=1}
+Broadcasting: ByzantineMessage{sender=ByzantineProcessDescription{  pid='49', hostname='192.168.3.174', isMaliciousNode=false}, phase='N', round=1, w=0}
+Broadcasting: ByzantineMessage{sender=ByzantineProcessDescription{  pid='20', hostname='192.168.3.174', isMaliciousNode=false}, phase='N', round=1, w=1}
+Broadcasting: ByzantineMessage{sender=ByzantineProcessDescription{  pid='43', hostname='192.168.3.174', isMaliciousNode=false}, phase='N', round=1, w=0}
+Broadcasting: ByzantineMessage{sender=ByzantineProcessDescription{  pid='21', hostname='192.168.3.174', isMaliciousNode=false}, phase='N', round=1, w=1}
+Broadcasting: ByzantineMessage{sender=ByzantineProcessDescription{  pid='30', hostname='192.168.3.174', isMaliciousNode=false}, phase='N', round=1, w=0}
+Broadcasting: ByzantineMessage{sender=ByzantineProcessDescription{  pid='29', hostname='192.168.3.174', isMaliciousNode=false}, phase='N', round=1, w=0}
+Broadcasting: ByzantineMessage{sender=ByzantineProcessDescription{  pid='46', hostname='192.168.3.174', isMaliciousNode=false}, phase='N', round=1, w=0}
+Broadcasting: ByzantineMessage{sender=ByzantineProcessDescription{  pid='35', hostname='192.168.3.174', isMaliciousNode=false}, phase='N', round=1, w=0}
+Broadcasting: ByzantineMessage{sender=ByzantineProcessDescription{  pid='34', hostname='192.168.3.174', isMaliciousNode=false}, phase='N', round=1, w=1}
+Broadcasting: ByzantineMessage{sender=ByzantineProcessDescription{  pid='47', hostname='192.168.3.174', isMaliciousNode=false}, phase='N', round=1, w=1}
+Broadcasting: ByzantineMessage{sender=ByzantineProcessDescription{  pid='25', hostname='192.168.3.174', isMaliciousNode=false}, phase='N', round=1, w=0}
+Broadcasting: ByzantineMessage{sender=ByzantineProcessDescription{  pid='37', hostname='192.168.3.174', isMaliciousNode=false}, phase='N', round=1, w=0}
+Broadcasting: ByzantineMessage{sender=ByzantineProcessDescription{  pid='32', hostname='192.168.3.174', isMaliciousNode=false}, phase='N', round=1, w=1}
+Broadcasting: ByzantineMessage{sender=ByzantineProcessDescription{  pid='42', hostname='192.168.3.174', isMaliciousNode=false}, phase='N', round=1, w=0}
+Broadcasting: ByzantineMessage{sender=ByzantineProcessDescription{  pid='44', hostname='192.168.3.174', isMaliciousNode=false}, phase='N', round=1, w=1}
+Broadcasting: ByzantineMessage{sender=ByzantineProcessDescription{  pid='41', hostname='192.168.3.174', isMaliciousNode=false}, phase='N', round=1, w=0}
+Broadcasting: ByzantineMessage{sender=ByzantineProcessDescription{  pid='38', hostname='192.168.3.174', isMaliciousNode=false}, phase='N', round=1, w=0}
+Broadcasting: ByzantineMessage{sender=ByzantineProcessDescription{  pid='51', hostname='192.168.3.174', isMaliciousNode=false}, phase='N', round=1, w=1}
+Broadcasting: ByzantineMessage{sender=ByzantineProcessDescription{  pid='36', hostname='192.168.3.174', isMaliciousNode=false}, phase='N', round=1, w=0}
+Broadcasting: ByzantineMessage{sender=ByzantineProcessDescription{  pid='26', hostname='192.168.3.174', isMaliciousNode=false}, phase='N', round=1, w=1}
+Notification:  count0: 24 count1: 19
+Broadcasting: ByzantineMessage{sender=ByzantineProcessDescription{  pid='20', hostname='192.168.3.174', isMaliciousNode=false}, phase='P', round=1, w=72}
+Notification:  count0: 23 count1: 20
+Broadcasting: ByzantineMessage{sender=ByzantineProcessDescription{  pid='21', hostname='192.168.3.174', isMaliciousNode=false}, phase='P', round=1, w=99}
+Notification:  count0: 23 count1: 19
+Broadcasting: ByzantineMessage{sender=ByzantineProcessDescription{  pid='22', hostname='192.168.3.174', isMaliciousNode=false}, phase='P', round=1, w=27}
+Notification:  count0: 24 count1: 18
+Broadcasting: ByzantineMessage{sender=ByzantineProcessDescription{  pid='23', hostname='192.168.3.174', isMaliciousNode=false}, phase='P', round=1, w=2}
+Notification:  count0: 25 count1: 18
+Broadcasting: ByzantineMessage{sender=ByzantineProcessDescription{  pid='24', hostname='192.168.3.174', isMaliciousNode=false}, phase='P', round=1, w=73}
+Notification:  count0: 24 count1: 19
+Broadcasting: ByzantineMessage{sender=ByzantineProcessDescription{  pid='25', hostname='192.168.3.174', isMaliciousNode=false}, phase='P', round=1, w=94}
+Notification:  count0: 25 count1: 19
+Broadcasting: ByzantineMessage{sender=ByzantineProcessDescription{  pid='26', hostname='192.168.3.174', isMaliciousNode=false}, phase='P', round=1, w=66}
+Notification:  count0: 24 count1: 18
+Broadcasting: ByzantineMessage{sender=ByzantineProcessDescription{  pid='27', hostname='192.168.3.174', isMaliciousNode=false}, phase='P', round=1, w=77}
+Notification:  count0: 22 count1: 19
+Broadcasting: ByzantineMessage{sender=ByzantineProcessDescription{  pid='28', hostname='192.168.3.174', isMaliciousNode=false}, phase='P', round=1, w=46}
+Notification:  count0: 23 count1: 18
+Broadcasting: ByzantineMessage{sender=ByzantineProcessDescription{  pid='29', hostname='192.168.3.174', isMaliciousNode=false}, phase='P', round=1, w=19}
+Notification:  count0: 24 count1: 19
+Broadcasting: ByzantineMessage{sender=ByzantineProcessDescription{  pid='30', hostname='192.168.3.174', isMaliciousNode=false}, phase='P', round=1, w=21}
+Notification:  count0: 22 count1: 19
+Broadcasting: ByzantineMessage{sender=ByzantineProcessDescription{  pid='31', hostname='192.168.3.174', isMaliciousNode=false}, phase='P', round=1, w=63}
+Notification:  count0: 24 count1: 19
+Broadcasting: ByzantineMessage{sender=ByzantineProcessDescription{  pid='32', hostname='192.168.3.174', isMaliciousNode=false}, phase='P', round=1, w=40}
+Notification:  count0: 22 count1: 19
+Broadcasting: ByzantineMessage{sender=ByzantineProcessDescription{  pid='33', hostname='192.168.3.174', isMaliciousNode=false}, phase='P', round=1, w=96}
+Notification:  count0: 22 count1: 18
+Broadcasting: ByzantineMessage{sender=ByzantineProcessDescription{  pid='34', hostname='192.168.3.174', isMaliciousNode=false}, phase='P', round=1, w=56}
+Notification:  count0: 25 count1: 20
+Broadcasting: ByzantineMessage{sender=ByzantineProcessDescription{  pid='35', hostname='192.168.3.174', isMaliciousNode=false}, phase='P', round=1, w=85}
+Notification:  count0: 23 count1: 21
+Broadcasting: ByzantineMessage{sender=ByzantineProcessDescription{  pid='36', hostname='192.168.3.174', isMaliciousNode=false}, phase='P', round=1, w=100}
+Notification:  count0: 24 count1: 21
+Broadcasting: ByzantineMessage{sender=ByzantineProcessDescription{  pid='37', hostname='192.168.3.174', isMaliciousNode=false}, phase='P', round=1, w=53}
+Notification:  count0: 23 count1: 22
+Broadcasting: ByzantineMessage{sender=ByzantineProcessDescription{  pid='38', hostname='192.168.3.174', isMaliciousNode=false}, phase='P', round=1, w=95}
+Notification:  count0: 23 count1: 21
+Broadcasting: ByzantineMessage{sender=ByzantineProcessDescription{  pid='39', hostname='192.168.3.174', isMaliciousNode=false}, phase='P', round=1, w=32}
+Notification:  count0: 21 count1: 19
+Broadcasting: ByzantineMessage{sender=ByzantineProcessDescription{  pid='41', hostname='192.168.3.174', isMaliciousNode=false}, phase='P', round=1, w=65}
+Notification:  count0: 23 count1: 22
+Broadcasting: ByzantineMessage{sender=ByzantineProcessDescription{  pid='40', hostname='192.168.3.174', isMaliciousNode=false}, phase='P', round=1, w=84}
+Notification:  count0: 21 count1: 21
+Broadcasting: ByzantineMessage{sender=ByzantineProcessDescription{  pid='42', hostname='192.168.3.174', isMaliciousNode=false}, phase='P', round=1, w=76}
+Notification:  count0: 22 count1: 21
+Broadcasting: ByzantineMessage{sender=ByzantineProcessDescription{  pid='43', hostname='192.168.3.174', isMaliciousNode=false}, phase='P', round=1, w=91}
+Notification:  count0: 23 count1: 19
+Broadcasting: ByzantineMessage{sender=ByzantineProcessDescription{  pid='44', hostname='192.168.3.174', isMaliciousNode=false}, phase='P', round=1, w=12}
+Notification:  count0: 20 count1: 20
+Broadcasting: ByzantineMessage{sender=ByzantineProcessDescription{  pid='45', hostname='192.168.3.174', isMaliciousNode=false}, phase='P', round=1, w=94}
+Notification:  count0: 20 count1: 20
+Broadcasting: ByzantineMessage{sender=ByzantineProcessDescription{  pid='46', hostname='192.168.3.174', isMaliciousNode=false}, phase='P', round=1, w=81}
+Notification:  count0: 24 count1: 19
+Broadcasting: ByzantineMessage{sender=ByzantineProcessDescription{  pid='47', hostname='192.168.3.174', isMaliciousNode=false}, phase='P', round=1, w=15}
+Notification:  count0: 24 count1: 19
+Notification:  count0: 20 count1: 20
+Broadcasting: ByzantineMessage{sender=ByzantineProcessDescription{  pid='48', hostname='192.168.3.174', isMaliciousNode=false}, phase='P', round=1, w=67}
+Broadcasting: ByzantineMessage{sender=ByzantineProcessDescription{  pid='49', hostname='192.168.3.174', isMaliciousNode=false}, phase='P', round=1, w=68}
+Notification:  count0: 21 count1: 20
+Broadcasting: ByzantineMessage{sender=ByzantineProcessDescription{  pid='50', hostname='192.168.3.174', isMaliciousNode=false}, phase='P', round=1, w=80}
+Notification:  count0: 24 count1: 20
+Broadcasting: ByzantineMessage{sender=ByzantineProcessDescription{  pid='51', hostname='192.168.3.174', isMaliciousNode=false}, phase='P', round=1, w=36}
