@@ -43,7 +43,7 @@ public class HonestByzantineRunnable implements Runnable, ReceiverRemoteInterfac
 
     private void broadcast(int w) {
         ByzantineMessage message = new ByzantineMessage(thisProcess, phase, round, w);
-        System.out.println("Broadcasting: " + message);
+        System.out.println(message.getRound() + message.getPhase() + " " + message.getSender().getPid() + " " + message.getW());
         new Thread(new BroadcastRunnable(thisProcess, message, allProcesses)).start();
     }
 
@@ -92,7 +92,7 @@ public class HonestByzantineRunnable implements Runnable, ReceiverRemoteInterfac
                     long count0 = buffer.stream().filter(m -> m.getPhase().equals(this.phase) && m.getRound() == this.round).filter(m -> m.getW() == 0).count();
                     long count1 = buffer.stream().filter(m -> m.getPhase().equals(this.phase) && m.getRound() == this.round).filter(m -> m.getW() == 1).count();
 
-                    System.out.println("Notification: " + " count0: " + count0 + " count1: " + count1);
+//                    System.out.println("Notification: " + " count0: " + count0 + " count1: " + count1);
 
                     phase = PROPOSAL_PHASE;
                     if (count0 > Math.floor((n + f) * 0.5)) {
@@ -113,7 +113,7 @@ public class HonestByzantineRunnable implements Runnable, ReceiverRemoteInterfac
                     long count1 = buffer.stream().filter(m -> m.getPhase().equals(this.phase) && m.getRound() == this.round).filter(m -> m.getW() == 1).count();
 
                     if (count0 > Math.floor(f) || count1 > Math.floor(f)) {
-                        System.out.println("Proposal: " + " count0: " + count0 + " count1: " + count1);
+//                        System.out.println("Proposal: " + " count0: " + count0 + " count1: " + count1);
                         v = count0 > Math.floor(f) ? 0 : 1;
                         if (count0 > 3 * Math.floor(f) || count1 > 3 * Math.floor(f)) {
                             decided = true;

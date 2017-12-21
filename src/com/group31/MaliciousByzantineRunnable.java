@@ -20,13 +20,13 @@ public class MaliciousByzantineRunnable implements Runnable, ReceiverRemoteInter
 
     private void broadcast(String phase, int round, int w) {
         ByzantineMessage message = new ByzantineMessage(thisProcess, phase, round, w);
-        System.out.println("Broadcasting: " + message);
+        System.out.println(message.getRound() + message.getPhase() + " " + message.getSender().getPid() +  " " + message.getW());
         new Thread(new BroadcastRunnable(thisProcess, message, allProcesses)).start();
     }
 
     @Override
     public void receive(ByzantineMessage message) throws RemoteException {
-        boolean shouldBroadcast = new Random().nextInt() == 0;
+        boolean shouldBroadcast = new Random().nextInt(10) == 0; // Send with a probablity of 1/10
 
         // Discard messages from self and broadcast opposite value from others
         if (message.getSender().getPid() != thisProcess.getPid()) {

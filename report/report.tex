@@ -1,0 +1,93 @@
+\documentclass [a4,twoside,11pt] {article}
+
+\usepackage{times}
+\usepackage{color}
+\usepackage{longtable}
+\usepackage{graphicx,rotating,booktabs}
+
+\setlength{\textwidth}{6in}
+\setlength{\textheight}{9in}
+\setlength{\oddsidemargin}{0.25in}
+\setlength{\evensidemargin}{0.25in}
+
+\hyphenation{practicum-ad-mini-stratie}
+
+\begin{document}
+
+\title{
+    \flushleft
+      {\small 
+      {Distributed Systems Group \\
+        Department Software Technology\\
+      Faculty EEMCS\\
+      DELFT UNIVERSITY OF TECHNOLOGY\\}}
+    \center {
+      \LARGE{LAB REPORT \\ DISTRIBUTED ALGORITHMS (IN4150) \\ 2017-2018 \\}
+      \vspace{0.5cm}
+      Randomized Byzantine Agreement
+    }
+}
+\author{
+  \newblock Santhos Baala Ramalingam Santhanakrishnan \\ 4740270 \\ \\
+  \newblock Chuting Zhu \\ 4728572 \\
+}
+\date{December 21, 2017}
+\maketitle
+
+\setcounter{secnumdepth}{1}
+
+% ============================================================================
+
+The following sections tabulate results from the various cases that we tried. The table columns
+correspond to process ids, red indicates malicious process and the rows correspond to the round-phase, 1N for 1st round notification phase, 1P for 1st round proposal phase and so on. The consensus reached is indicate in bold at the end of each tabulation. For malicious process, since there can be multiple broadcasts or no broadcasts in a single round, we list only the sampled values.
+
+\section*{Case 1: 6 processors with 1 faulty}
+
+\begin{center}
+\small{Table 1. Case 1 - \textbf{Consensus value: 1}, \textbf{Total Rounds: 41}}
+\vspace{-0.5cm}
+\end{center}
+\small
+\begin{longtable}{ccccccc}
+  \hline
+  & \textcolor{red}{1} & 2 & 3 & 4 & 5 & 6 \\
+  \hline
+  \input{cases/case-1}
+\end{longtable}
+
+\section*{Case 2: 11 processors with 2 faulty}
+
+\begin{center}
+\small{Table 2. Case 2 - \textbf{Consensus value: 1}, \textbf{Total Rounds: 12}}
+\vspace{-0.5cm}
+\end{center}
+\small
+\begin{longtable}{cccccccccccc}
+  \hline
+  & \textcolor{red}{1} & \textcolor{red}{2} & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 & 11\\
+  \hline
+  \input{cases/case-2}
+\end{longtable}
+
+\newpage
+
+\section*{Case 3: 40 processors with 7 faulty}
+
+\begin{center}
+\small{Table 3. Case 3 - \textbf{Consensus value: 0}, \textbf{Total Rounds: 298}}
+\vspace{-0.5cm}
+\end{center}
+\small\setlength\tabcolsep{1pt}
+\begin{longtable}{cccccccccccccccccccccccccccccccccccccccccccccccccccccccc|}
+  \hline
+  & \textcolor{red}{1} & \textcolor{red}{2} & \textcolor{red}{3} & \textcolor{red}{4} & \textcolor{red}{5} & \textcolor{red}{6} & \textcolor{red}{7} & 8 & 9 & 10 & 11 & 12 & 13 & 14 & 15 & 16 & 17 & 18 & 19 & 20 & 21 & 22 & 23 & 24 & 25 & 26 & 27 & 28 & 29 & 30 & 31 & 32 & 33 & 34 & 35 & 36 & 37 & 38 & 39 & 40 \\
+  \hline
+  \input{cases/case-3}
+\end{longtable}
+...continued upto 298 rounds
+
+\section*{Case - More than $1/5$ faulty processes with 40 processes}
+
+When we attempted to run with more than $1/5$ faulty processes, the processes failed to reach consensus and could not make progress beyond certain number of rounds (mostly $1/n$ rounds)
+
+\end{document}
